@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en">
+<head>
+<meta charset="UTF-8">
+
+<style>
+    .exp-header,.lbl,.name{font-weight:700}.col1,.exp-header,.profile-image img{border-style:solid}.exp,.exp-header,.psi{margin-bottom:12px}#main{width:848px;overflow:hidden;min-height:1140px;font-family:Calibri;float:left}.col1{width:264px;border-width:1px 2px 0;background-color:#FAFAE8;border-top-left-radius:62px;border-top-right-radius:132px;border-color:#ededed;min-height:1200px;color:#111;padding-left:6px}.col2{margin-top:12px;padding-left:16px;width:65%}.max,.psi{width:100%}.col3{visibility:hidden}.cols{display:block;float:left}.lbl{color:#916649}.psi{display:inline-block}.name{font-size:36px;text-align:center;color:#5990A5}.profile-image{padding-top:6px}.profile-image img{width:248px;height:248px;float:none;border-width:2px;border-color:#F0B010;border-radius:124px;background-color:#497d91}.exp-header{font-size:22px;text-align:left;color:#916649;border-width:0 0 2px;border-color:silver;margin-top:6px}.exp-item-header,.exp-item-sub{color:#5990A5;text-align:left;font-weight:700}.exp-item{margin-bottom:8px}.exp-item-header{font-size:18px}.exp-item-sub{padding-left:8px;font-size:16px}.exp-item-body,.exp-item-sub2{padding-left:8px;font-size:15px}.exp-item-sub2{text-align:left;font-weight:700;color:#333}.exp-item-body{color:#111;text-align:justify}.js-tab div,.js-tab input,.js-tab label,.nav-button{color:#e5e5e5}.list-in-text{margin-top:4px;margin-bottom:4px}.js-panel{float:left;min-height:700px;background-color:#000;padding:0 6px}.js-nav,.js-tab{display:block;float:none;width:100%}.js-nav{margin-bottom:26px}.nav-button{border-color:#ffcf25;padding:3px;border-width:2px 2px 0;border-style:solid;background-color:#5990A5;border-top-left-radius:4px;border-top-right-radius:4px}.js-tab input,.tab-button{border-color:#e5e5e5;border-radius:4px;background-color:#5990A5;border-style:solid}.js-tab div{margin-bottom:12px}.js-tab input{border-width:2px;width:100%;margin-bottom:8px}.js-tab input.imgRadio{width:auto;float:left}.js-tab input.js-color{width:10ch;margin-left:6px}.tab-button{color:#ffcf25;padding:3px;border-width:2px 2px 0;margin-bottom:6px}#js-personalValue{resize:none}.dragBorder{border-width:2px;border-style:solid;border-color:#ff6d6b}
+</style>
+<title>CV Creator</title>
+</head>
+<body>
+<div id="cv-creator">
+    <div id="main">
+
+        <div id="personalInfo" class="col1 cols">
+            <div class="profile-image psi_0"><img draggable="false" id="profile-pic"
+                                                  src2="file://C:\Users\mait\Pictures\pics\cv.jpg"></div>
+            <div class="name psi psi_1"><label id="nameLabel">Mait Sarv</label></div>
+            <div id="js-personal" class="jsHide max">
+                <input id="js-personalHeader" ondrop = "onDropPersonal(event)" class="max"/>
+                <textarea id="js-personalValue" class="max" rows="2"></textarea>
+                <button id="js-addPersonal" class="tab-button" onclick="addPersonal()">Add Info</button>
+                <label id="js-deletePersonal" class="tab-button" ondragover="allowDrop(event)" ondrop="onDropPersonalDelete(event)" style="display: none;">Delete</label>
+            </div>
+        </div>
+        <div id="exp-main" class="col2 cols">
+            <div id="js-exp" class="jsHide max">
+                <input id="js-expHeader" ondrop = "onDropExp(event)" class="max"/>
+                <button id="js-addExp" class="tab-button" href="" onclick="addExp()">Add Heading</button>
+                <label id="js-deleteExp" class="tab-button" ondragover="allowDrop(event)" ondrop="onDropExpDelete(event)" style="display: none;">Delete</label>
+            </div>
+        </div>
+    </div>
+    <div id="js-panel" class="js-panel jsHide">
+        <div class="js-nav">
+            <button id="nav1" class="nav-button" href="" onclick="setTabVisible(1)">Settings</button>
+            <button id="nav2" class="nav-button" href="" onclick="setTabVisible(2)">Colors</button>
+            <button id="nav3" class="nav-button" href="" onclick="setTabVisible(3)">Parameters</button>
+        </div>
+        <div id="tab1" class="js-tab">
+            <div><button id="printMode" class="tab-button" href="" onclick="hideForPrinting()">Print CV</button><label> (or press ESC)</label></div>
+            <div>
+                <table>
+                    <tr>
+                        <td><input id='img-radio' class='imgRadio' type="radio" name="imgType" value="img" onclick="imageTypeChange();">Image</input></td>
+                        <td><input id='svg-radio' class='imgRadio' type="radio" name="imgType" value="svg" onclick="imageTypeChange();">SVG</input></td>
+                        <td><input id='no-img' class='imgRadio' type="radio" name="imgType" value="no" onclick="imageTypeChange();">No Image</input></td>
+                    </tr>
+                </table>
+                <label for="imagePath">Image</label>
+                <input id="imagePath" type="file" accept="image/*" onchange="findImage(event);"/>
+                <br>
+                <label>SVG</label>
+                <table>
+                    <tr>
+                        <td><label>Text</label></td>
+                        <td><input id="svg-text" value="CV" onchange="updateSVG();"></input></td>
+                    </tr>
+                    <tr>
+                        <td><label>Color</label></td>
+                        <td><input id="svg-color" class="js-color" value="111" maxlength="6" onchange="updateSVG();"></input></td>
+                    </tr>
+                    <tr>
+                        <td><label>Font size</label></td>
+                        <td><input id="svg-font" type="number" value="64" min="1" max="200" onchange="updateSVG();"></input></td>
+                    </tr>
+                    <tr>
+                        <td><label>Background Color</label></td>
+                        <td><input id="svg-bck" class="js-color" value="497D91" maxlength="6" onchange="updateSVG();"></input></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <label for="set-name">Name</label>
+                <input id="set-name" onchange="setLabel('set-name','nameLabel');"/>
+            </div>
+            <div>
+                <ul style="padding: 14px">
+                    <li>ESC to toggle print view.</li>
+                    <li>Element order can be changed with drag and drop.</li>
+                    <li>Text copy is possible in print mode.</li>
+                    <li>Printing can be done from browser</li>
+                    <li>Page can be saved from browser</li>
+                </ul>
+            </div>
+        </div>
+        <div id="tab2" class="js-tab" style="display: none;">
+            <div>
+                <label class="max">BORDERS</label>
+                <table>
+                    <tr>
+                        <td><label>Image</label></td>
+                        <td><input class="js-color" value="F0B010" maxlength="6" onchange="setBorderColor(this,'','profile-pic')"></input></td>
+                    </tr>
+                    <tr>
+                        <td><label>Right Panel</label></td>
+                        <td><input class="js-color" value="EDEDED" maxlength="6" onchange="setBorderColor(this,'col1','')"></input></td>
+                    </tr>
+                    <tr>
+                        <td><label>Main heading</label></td>
+                        <td><input class="js-color" value="C0C0C0" maxlength="6" onchange="setBorderColor(this,'exp-header','')"></input></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <label class="max">TEXT</label>
+                <table>
+                    <tr>
+                        <td><label>Name</label></td>
+                        <td><input class="js-color" value="5990A5" maxlength="6" onchange="setTextColor(this,'name','')"></input></td>
+                    </tr>
+                    <tr>
+                        <td><label>Label</label></td>
+                        <td><input class="js-color" value="916649" maxlength="6" onchange="setTextColor(this,'lbl','')"></input></td>
+                    </tr>
+                    <tr>
+                        <td><label>Panel text</label></td>
+                        <td><input class="js-color" value="111" maxlength="6" onchange="setTextColor(this,'col1','')"></input></td>
+                    </tr>
+                    <tr>
+                        <td><label>Main heading</label></td>
+                        <td><input class="js-color" value="916649" maxlength="6" onchange="setTextColor(this,'exp-header','')"></input></td>
+                    </tr>
+                    <tr>
+                        <td><label>Heading</label></td>
+                        <td><input class="js-color" value="5990A5" maxlength="6" onchange="setTextColor(this,'exp-item-header','')"></input></td>
+                    </tr>
+                    <tr>
+                        <td><label>Sub Heading</label></td>
+                        <td><input class="js-color" value="5990A5" maxlength="6" onchange="setTextColor(this,'exp-item-sub','')"></input></td>
+                    </tr>
+                    <tr>
+                        <td><label>Sub Heading2</label></td>
+                        <td><input class="js-color" value="333" maxlength="6" onchange="setTextColor(this,'exp-item-sub2','')"></input></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div id="tab3" class="js-tab" style="display: none;">
+            bbb
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    window.addEventListener("keyup",togglePrintView, false);
+    function setTabVisible(t) {
+        for (i = 1; i <= 3; i++) {
+            if (i === t) {
+                document.getElementById('tab' + i.toString()).style.display = 'block';
+            }
+            else {
+                document.getElementById('tab' + i.toString()).style.display = 'none';
+            }
+        }
+
+    }
+
+    function addPersonal() {
+        var psi = document.getElementsByClassName('psi');
+        var num = 1;
+        for (i = 0; i < psi.length; i++) {
+            var id = psi[i].id.split('_')[1];
+            var idNum = Number(id);
+            if (idNum >= num) num = idNum + 1;
+        }
+
+        //Get values from fields
+        var head = document.getElementById('js-personalHeader').value;
+        var value = document.getElementById('js-personalValue').value.split('\n');
+
+        //Create outer DIV
+        var personal = document.createElement('DIV');
+        personal.setAttribute('class', 'psi draggable');
+        personal.setAttribute('draggable', 'true');
+        personal.setAttribute('ondragover', 'allowDrop(event)');
+        personal.setAttribute('ondrop', 'onDropPersonal(event)');
+        personal.setAttribute('ondragstart', 'onDragSt(event)');
+        personal.setAttribute('ondragend', 'onDragLeavePersonal(event)');
+        personal.setAttribute('id', 'psi_' + num);
+
+        //Create header label
+        var lbldiv = document.createElement('DIV');
+        lbldiv.setAttribute('class', 'max');
+        var lbl = document.createElement('LABEL');
+        lbl.setAttribute('class', 'lbl');
+        lbl.appendChild(document.createTextNode(head));
+        lbldiv.appendChild(lbl);
+        personal.appendChild(lbldiv);
+
+        //Add the value label
+        var valueLbl = document.createElement('LABEL');
+        valueLbl.appendChild(document.createTextNode(value[0]));
+        var len = value.length;
+        for (i = 1; i < len; i++) {
+            valueLbl.appendChild(document.createElement('BR'));
+            valueLbl.appendChild(document.createTextNode(value[i]));
+        }
+        personal.appendChild(valueLbl);
+
+        //Add the new paersonal info DIV element
+        var divBefore = document.getElementById('js-personal');
+        var psInfo = document.getElementById('personalInfo');
+        psInfo.insertBefore(personal, divBefore);
+
+        //Clear the fields
+        document.getElementById('js-personalHeader').value = '';
+        document.getElementById('js-personalValue').value = '';
+    }
+
+    function setLabel(fldId, labelName) {
+        var lbl = document.getElementById(labelName);
+        lbl.innerText = document.getElementById(fldId).value;
+    }
+
+
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    //Personal Data
+    function onDragSt(ev) {
+        ev.dataTransfer.setData('text', ev.target.id);
+        document.getElementById('js-deletePersonal').style.display = 'inherit';
+        ev.target.parentNode.classList.add('dragBorder');
+    }
+
+    function onDragLeavePersonal(ev) {
+        ev.preventDefault();
+        document.getElementById('js-deletePersonal').style.display = 'none';
+        ev.target.parentNode.classList.remove('dragBorder');
+    }
+
+    function onDropPersonal(ev) {
+
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData('text');
+        var elem = document.getElementById(data);
+        var parent = elem.parentNode;
+        var target = ev.target;
+        var end = false;
+        while (end === false) {
+            if (elem.isSameNode(target)) return;
+            if (parent.isSameNode(target.parentNode)) {
+                parent.removeChild(elem);
+                parent.insertBefore(elem, target);
+                end = true;
+            }
+            target = target.parentNode;
+            if (target === undefined) end = true;
+            else if (target.tagName.toUpperCase() === 'BODY') end = true;
+        }
+    }
+
+    function onDropPersonalDelete(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData('text');
+        var elem = document.getElementById(data);
+        var parent = elem.parentNode;
+        parent.classList.remove('dragBorder');
+        parent.removeChild(elem);
+        document.getElementById('js-deletePersonal').style.display = 'none';
+    }
+
+
+    //Exp data
+    function addExp() {
+        var exps = document.getElementsByClassName('exp');
+        var num = 0;
+        for (i = 0; i < exps.length; i++) {
+            var id = exps[i].id.split('_')[1];
+            var idNum = Number(id);
+            if (idNum >= num) num = idNum + 1;
+        }
+
+        //Get values from field
+        var head = document.getElementById('js-expHeader').value;
+
+        //Create outer DIV
+        var exp = document.createElement('DIV');
+        exp.setAttribute('class', 'exp max draggable');
+        exp.setAttribute('draggable', 'true');
+        exp.setAttribute('ondragover', 'allowDrop(event)');
+        exp.setAttribute('ondrop', 'onDropPersonal(event)');
+        exp.setAttribute('ondragstart', 'onDragExp(event)');
+        exp.setAttribute('ondragend', 'onDragLeaveExp(event)');
+        exp.setAttribute('id', 'exp_' + num);
+
+        //Create header label
+        var lbldiv = document.createElement('DIV');
+        lbldiv.setAttribute('class', 'exp-header');
+        lbldiv.appendChild(document.createTextNode(head));
+        exp.appendChild(lbldiv);
+
+        //Create body div
+        var bodydiv = document.createElement('DIV');
+        bodydiv.setAttribute('class', 'exp-body');
+
+        //Create fields for adding Sub sections
+        var jsdiv = document.createElement('DIV');
+        jsdiv.setAttribute('class', 'jsHide max');
+
+        //Create button to add new element
+        var button = createJsButton(exp.id, 'addExpElem(this)', 'Add New Element');
+        jsdiv.appendChild(button);
+
+        bodydiv.appendChild(jsdiv);
+        exp.appendChild(bodydiv);
+
+        var root = document.getElementById('exp-main');
+        var js_exp = document.getElementById('js-exp');
+        root.insertBefore(exp, js_exp);
+
+        document.getElementById('js-expHeader').value = '';
+    }
+
+    function addExpElem(node) {
+        var parent = node.parentNode.parentNode;
+        var expid = parent.parentNode.id
+        var exps = document.getElementsByClassName(expid);
+        var num = 0;
+        for (i = 0; i < exps.length; i++) {
+            var id = exps[i].id.split('_')[2];
+            var idNum = Number(id);
+            if (idNum >= num) num = idNum + 1;
+        }
+
+        var exp = document.createElement('DIV');
+        exp.setAttribute('class', 'draggable exp-item ' + expid);
+        exp.setAttribute('id', expid + '_' + num);
+        exp.setAttribute('draggable', 'true');
+        exp.setAttribute('ondragover', 'allowDrop(event)');
+        exp.setAttribute('ondrop', 'onDropPersonal(event)');
+        exp.setAttribute('ondragstart', 'onDragExp(event)');
+        exp.setAttribute('ondragend', 'onDragLeaveExp(event)');
+
+        var jsdiv = document.createElement('DIV');
+        jsdiv.setAttribute('class', 'jsHide max');
+        var inp = document.createElement('TEXTAREA');
+        inp.setAttribute('class', ' max');
+        inp.setAttribute('id', exp.id + 'jsfield');
+        inp.setAttribute('rows', '2');
+
+        //Create add buttons
+        var buttonDiv = document.createElement('DIV');
+        var button = createJsButton(exp.id, 'addExpHead(this)', 'Add Heading');
+        var button2 = createJsButton(exp.id, 'addExpSub(this)', 'Add Sub heading');
+        var button3 = createJsButton(exp.id, 'addExpSub2(this)', 'Add Sub heading 2');
+        var button4 = createJsButton(exp.id, 'addExpText(this)', 'Add Text');
+        buttonDiv.appendChild(button);
+        buttonDiv.appendChild(button2);
+        buttonDiv.appendChild(button3);
+        buttonDiv.appendChild(button4);
+        jsdiv.appendChild(inp);
+        jsdiv.appendChild(buttonDiv);
+
+        exp.appendChild(jsdiv);
+
+        parent.insertBefore(exp, node.parentNode);
+    }
+
+    function addExpHead(node) {
+        var js = node.parentNode.parentNode;
+        var parent = js.parentNode;
+        var id = parent.id
+        //Get values from field
+        var val = document.getElementById(id + 'jsfield').value;
+        if (val.trim() === '') return;
+
+        var div = document.createElement('DIV');
+        div.setAttribute('class', 'exp-item-header')
+        div.appendChild(document.createTextNode(val));
+
+        parent.insertBefore(div, js);
+        document.getElementById(id + 'jsfield').value = ''
+    }
+
+    function addExpSub(node) {
+        var js = node.parentNode.parentNode;
+        var parent = js.parentNode;
+        var id = parent.id
+        //Get values from field
+        var val = document.getElementById(id + 'jsfield').value;
+        if (val.trim() === '') return;
+
+        var div = document.createElement('DIV');
+        div.setAttribute('class', 'exp-item-sub')
+        div.appendChild(document.createTextNode(val));
+
+        parent.insertBefore(div, js);
+        document.getElementById(id + 'jsfield').value = '';
+    }
+
+    function addExpSub2(node) {
+        var js = node.parentNode.parentNode;
+        var parent = js.parentNode;
+        var id = parent.id
+        //Get values from field
+        var val = document.getElementById(id + 'jsfield').value;
+        if (val.trim() === '') return;
+
+        var div = document.createElement('DIV');
+        div.setAttribute('class', 'exp-item-sub2')
+        div.appendChild(document.createTextNode(val));
+
+        parent.insertBefore(div, js);
+        document.getElementById(id + 'jsfield').value = '';
+    }
+
+    function addExpText(node) {
+        var js = node.parentNode.parentNode;
+        var parent = js.parentNode;
+        var id = parent.id
+        //Get values from field
+        var val = document.getElementById(id + 'jsfield').value;
+        if (val.trim() === '') return;
+
+        var div = document.createElement('DIV');
+        div.setAttribute('class', 'exp-item-body')
+        div.appendChild(document.createTextNode(val));
+
+        parent.insertBefore(div, js);
+        document.getElementById(id + 'jsfield').value = '';
+    }
+
+    function createJsButton(id, func, text) {
+        var button = document.createElement('BUTTON');
+        button.setAttribute('class', 'tab-button ' + id);
+        button.setAttribute('onclick', func);
+        button.innerHTML = text;
+        return button;
+    }
+
+    function onDropExp(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData('text');
+        var elem = document.getElementById(data);
+        var parent = elem.parentNode;
+        var target = ev.target;
+        var end = false;
+        while (end === false) {
+            if (elem.isSameNode(target)) return;
+            if (parent.isSameNode(target.parentNode)) {
+                parent.removeChild(elem);
+                parent.insertBefore(elem, target);
+                end = true;
+            }
+            target = target.parentNode;
+            if (target === undefined) end = true;
+            else if (target.tagName.toUpperCase() === 'BODY') end = true;
+        }
+    }
+
+
+    //Personal Data
+    function onDragExp(ev) {
+        ev.dataTransfer.setData('text', ev.target.id);
+        document.getElementById('js-deleteExp').style.display = 'inherit';
+        ev.target.parentNode.classList.add('dragBorder');
+    }
+
+
+    function onDropExpDelete(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData('text');
+        var elem = document.getElementById(data);
+        var parent = elem.parentNode;
+        parent.classList.remove('dragBorder');
+        parent.removeChild(elem);
+        document.getElementById('js-deleteExp').style.display = 'none';
+    }
+
+    function onDragLeaveExp(ev) {
+        ev.preventDefault();
+        document.getElementById('js-deleteExp').style.display = 'none';
+        ev.target.parentNode.classList.remove('dragBorder');
+    }
+
+    function hideForPrinting() {
+        var elems = document.getElementsByClassName('jsHide');
+        for (i = 0; i < elems.length; i++) {
+            elems[i].style.display = 'none';
+        }
+        var elems = document.getElementsByClassName('draggable');
+        for (i = 0; i < elems.length; i++) {
+            elems[i].setAttribute('draggable', 'false');
+        }
+    }
+
+    function showJsPanels() {
+        var elems = document.getElementsByClassName('jsHide');
+        for (i = 0; i < elems.length; i++) {
+            elems[i].style.display = 'inherit';
+        }
+        var elems = document.getElementsByClassName('draggable');
+        for (i = 0; i < elems.length; i++) {
+            elems[i].setAttribute('draggable', 'true');
+        }
+    }
+
+
+    function togglePrintView(e) {
+        if (e.keyCode !== 27) return;
+        var jspanel = document.getElementById('js-panel');
+        if (jspanel.style.display === 'none') showJsPanels();
+        else hideForPrinting();
+    }
+
+    function setBorderColor(src, cls, id) {
+        if (isColorHex(src.value)) {
+            if (cls !== '') {
+                var elems = document.getElementsByClassName(cls);
+                for (i = 0; i < elems.length; i++) {
+                    elems[i].style.borderColor = '#' + src.value;
+                }
+            }
+            if (id !== '') {
+                var elem = document.getElementById(id);
+                if (elem !== undefined) elem.style.borderColor = '#' + src.value;
+            }
+        }
+    }
+
+    function setTextColor(src, cls, id) {
+        if (isColorHex(src.value)) {
+            if (cls !== '') {
+                var elems = document.getElementsByClassName(cls);
+                for (i = 0; i < elems.length; i++) {
+                    elems[i].style.color = '#' + src.value;
+                }
+            }
+            if (id !== '') {
+                var elem = document.getElementById(id);
+                if (elem !== undefined) elem.style.color = '#' + src.value;
+            }
+        }
+    }
+
+
+    function setBgColor(src, cls, id) {
+        if (isColorHex(src.value)) {
+            if (cls !== '') {
+                var elems = document.getElementsByClassName(cls);
+                for (i = 0; i < elems.length; i++) {
+                    elems[i].style.backgroundColor = '#' + src.value;
+                }
+            }
+            if (id !== '') {
+                var elem = document.getElementById(id);
+                if (elem !== undefined) elem.style.backgroundColor = '#' + src.value;
+            }
+        }
+    }
+
+
+    function isColorHex(h) {
+        if (h.length !== 3 && h.length !== 6) return false;
+        var a = parseInt(h, 16);
+        return (a.toString(16) === h.toLowerCase());
+    }
+
+    function findImage(event) {
+        var rimg = document.getElementById('img-radio');
+        if (rimg.checked === false) return;
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('profile-pic');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+        var path = document.getElementById('imagePath').value;
+        if (path === '') {
+            changeNameWhenNoImage();
+        }
+        else {
+            changeNameWhenShowImage();
+        }
+        //document.getElementById('profile-pic').setAttribute('src','file://' + path);
+    }
+
+    function updateSVG() {
+        var simg = document.getElementById('svg-radio');
+        if (simg.checked !== true) return;
+        var txt = document.getElementById('svg-text').value;
+        var color = document.getElementById('svg-color').value;
+        var fsize = document.getElementById('svg-font').value;
+        var bckCol = document.getElementById('svg-bck').value;
+        var svg = document.createElement('SVG');
+        svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+        svg.setAttribute('height', '248');
+        svg.setAttribute('width', '248');
+        var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('font-family', 'Calibri');
+        text.setAttribute('font-weight', 'bold');
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('font-size', fsize);
+        text.setAttribute('alignment-baseline', 'middle');
+        text.setAttribute('fill', '#' + color);
+        text.setAttribute('x', '124');
+        text.setAttribute('y', '124');
+        text.textContent = txt;
+        svg.appendChild(text);
+
+        var img = document.getElementById('profile-pic');
+        img.src = 'data:image/svg+xml;base64,' + btoa(svg.outerHTML);
+        img.style.backgroundColor = '#' + bckCol;
+
+        changeNameWhenShowImage();
+    }
+
+    function imageTypeChange(elem) {
+        var rimg = document.getElementById('img-radio');
+        if (rimg.checked) {
+            var event = new Event('change');
+            document.getElementById('imagePath').dispatchEvent(event);
+            return;
+        }
+        var simg = document.getElementById('svg-radio');
+        if (simg.checked) {
+            updateSVG();
+            return;
+        }
+        changeNameWhenNoImage();
+    }
+
+    function changeNameWhenNoImage(){
+        document.getElementsByClassName('profile-image')[0].style.display = 'none';
+        document.getElementById('nameLabel').style.float = 'left';
+        document.getElementById('nameLabel').style.marginTop = '14px';
+        document.getElementById('nameLabel').style.marginLeft = '6px';
+    }
+
+    function changeNameWhenShowImage(){
+        document.getElementsByClassName('profile-image')[0].style.display = 'inherit';
+        document.getElementById('nameLabel').style.float = 'none';
+        document.getElementById('nameLabel').style.marginTop = '0px';
+        document.getElementById('nameLabel').style.marginLeft = '0px';
+    }
+    changeNameWhenNoImage();
+
+</script>
+</html>
