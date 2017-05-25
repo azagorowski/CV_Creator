@@ -4,7 +4,7 @@ Simple HTML CV creator
 Creates an HTML file that can be printed an saved from browser.
 
 
-##How to use:
+## How to use:
 - The panel with black background is for settings. This can be hidden/show with ESC key.
 - Personal information should be added to right side of the page.
 - Professional information should be added to left side(the bigger column).
@@ -14,7 +14,7 @@ Creates an HTML file that can be printed an saved from browser.
 - For saving use the bowser.
 - For printing/exporting as PDF use browser.
 
-##TO DO:
+## TO DO:
 - Add more parameters, that would allow change border properties.
 - Multi page support?
 - Apply style properties to new elements.
