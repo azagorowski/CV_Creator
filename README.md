@@ -6,12 +6,12 @@ Creates an HTML file that can be printed an saved from browser.
 
 ## How to use:
 - The panel with black background is for settings. This can be hidden/show with ESC key.
-- Personal information should be added to right side of the page.
-- Professional information should be added to left side(the bigger column).
-- The order of added elements can be cahnged with drag and drop.
-- Elements can be deleted by dragging them on delete button.
+- Personal information should be added to left side of the page.
+- Professional information should be added to right side(the bigger column).
+- The order of added elements can be changed with drag and drop.
+- Elements can be deleted by dragging them on delete label.
 - Text can be copied in "print" mode, when all fields are hidden.
-- For saving use the bowser.
+- For saving CV use the brwser.
 - For printing/exporting as PDF use browser.
 
 ## TO DO:
